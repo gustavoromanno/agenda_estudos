@@ -1,0 +1,45 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="common.css">
+<style>
+.cal{position:absolute;left:20px;right:20px;top:120px;bottom:90px;background:#fff;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.35);padding:14px 16px;display:flex;flex-direction:column}
+.ch{display:flex;align-items:center;gap:10px;margin-bottom:10px}.ch h2{font-size:18px;font-weight:700}
+.seg{display:flex;background:#eef1f6;border-radius:8px;padding:3px;margin-left:auto}.seg span{font-size:12px;font-weight:600;padding:5px 12px;border-radius:6px;color:#475569}.seg .on{background:#fff;color:#1a4480;box-shadow:0 1px 2px rgba(0,0,0,.15)}
+.nav{font-size:13px;font-weight:600;color:#475569;border:1px solid #dbe1ea;border-radius:6px;padding:4px 10px}
+.grid{flex:1;display:grid;grid-template-columns:repeat(7,1fr);grid-template-rows:24px repeat(5,1fr);border-top:1px solid #e2e8f0;border-left:1px solid #e2e8f0}
+.grid>div{border-right:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;padding:4px 6px;font-size:12px;overflow:hidden}
+.dh{font-weight:700;color:#64748b;text-transform:uppercase;font-size:11px!important;text-align:center;background:#f8fafc}
+.n{font-weight:600;color:#475569;margin-bottom:3px;display:block}.out .n{color:#cbd5e1}
+.today{background:#eff5ff}.today .n{background:#2563eb;color:#fff;border-radius:50%;width:22px;height:22px;display:grid;place-items:center}
+.ev{display:block;border-radius:5px;padding:2px 6px;margin-bottom:3px;font-weight:600;font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-left:3px solid}
+.e1{background:#ccfbf1;color:#0f766e;border-color:#0d9488}.e2{background:#fce7f3;color:#be185d;border-color:#db2777}.e3{background:#dcfce7;color:#15803d;border-color:#16a34a}.e4{background:#ede9fe;color:#6d28d9;border-color:#7c3aed}
+.free{color:#94a3b8;font-style:italic}
+.switch{position:absolute;left:50%;bottom:82px;transform:translateX(30px);width:320px;background:#fff;border-radius:12px;box-shadow:0 18px 40px rgba(0,0,0,.45);padding:12px;z-index:5}
+.switch h4{font-size:12px;text-transform:uppercase;color:#64748b;letter-spacing:.04em;margin:4px 6px 8px}
+.bi{display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;font-size:14px;font-weight:600}
+.bi .sw{width:34px;height:26px;border-radius:6px}
+.bi small{margin-left:auto;color:#64748b;font-weight:500;font-size:12px}
+.bi.on{background:#eff5ff;outline:1px solid #bfd3fb}
+.nb{border-top:1px solid #e2e8f0;margin-top:6px;padding-top:6px;color:#2563eb}
+</style></head><body>
+<div class="top"><div class="logo">ES</div><div class="brand">ERP Study Scheduler</div><div class="search">🔍 Pesquisar matérias, módulos…</div><div class="btnc">+ Criar</div><div class="av">GR</div></div>
+<div class="boardbar"><h1>Planejador</h1><span class="chip">Visão Geral</span><span class="chip">Meta: 8h/semana</span><div class="sp"></div><span class="ghost">⚡ Redistribuir horas</span><span class="ghost">Hoje</span></div>
+<div class="cal">
+ <div class="ch"><span class="nav">‹</span><span class="nav">›</span><h2>Novembro 2026</h2><div class="seg"><span>Dia</span><span>Semana</span><span class="on">Mês</span></div></div>
+ <div class="grid">
+  <div class="dh">Seg</div><div class="dh">Ter</div><div class="dh">Qua</div><div class="dh">Qui</div><div class="dh">Sex</div><div class="dh">Sáb</div><div class="dh">Dom</div>
+  <div class="out"><span class="n">26</span></div><div class="out"><span class="n">27</span></div><div class="out"><span class="n">28</span></div><div class="out"><span class="n">29</span></div><div class="out"><span class="n">30</span></div><div class="out"><span class="n">31</span></div><div><span class="n">1</span></div>
+  <div><span class="n">2</span><span class="ev e4">2h · CFOP de Venda</span></div><div><span class="n">3</span><span class="ev e4">2h · CFOP de Venda</span></div><div><span class="n">4</span><span class="ev e3">2h · Conciliação</span></div><div><span class="n">5</span><span class="ev e3">2h · Conciliação</span></div><div><span class="n">6</span></div><div><span class="n">7</span></div><div><span class="n">8</span></div>
+  <div><span class="n">9</span><span class="ev e4">3h · Rejeições SEFAZ</span></div><div><span class="n">10</span><span class="ev e4">2h · Rejeições SEFAZ</span></div><div><span class="n">11</span><span class="ev e2">2h · Permissões Agentes</span></div><div><span class="n">12</span></div><div><span class="n">13</span><span class="ev e1">1h · Revisão OP</span></div><div><span class="n">14</span></div><div><span class="n">15</span></div>
+  <div><span class="n">16</span><span class="ev e1">3h · Custo Médio (CMC)</span></div><div><span class="n">17</span><span class="ev e1">3h · Custo Médio (CMC)</span></div><div><span class="n">18</span><span class="ev e2">2h · Rotinas e Gatilhos</span></div><div><span class="n">19</span></div><div class="today"><span class="n">20</span><span class="free">Livre</span></div><div><span class="n">21</span></div><div><span class="n">22</span></div>
+  <div><span class="n">23</span><span class="ev e2">3h · Rotinas e Gatilhos</span></div><div><span class="n">24</span><span class="ev e3">3h · Baixa em Lote e DRE</span></div><div><span class="n">25</span></div><div><span class="n">26</span></div><div><span class="n">27</span></div><div><span class="n">28</span></div><div><span class="n">29</span></div>
+ </div>
+</div>
+<div class="switch"><h4>Mudar de quadro</h4>
+ <div class="bi on"><span class="sw" style="background:linear-gradient(135deg,#0b1f3a,#2563eb)"></span>Visão Geral<small>8 matérias</small></div>
+ <div class="bi"><span class="sw" style="background:linear-gradient(135deg,#4c1d95,#8b5cf6)"></span>Vendas e NF-e<small>2</small></div>
+ <div class="bi"><span class="sw" style="background:linear-gradient(135deg,#134e4a,#14b8a6)"></span>Compras e Estoque<small>2</small></div>
+ <div class="bi"><span class="sw" style="background:linear-gradient(135deg,#14532d,#22c55e)"></span>Finanças<small>2</small></div>
+ <div class="bi"><span class="sw" style="background:linear-gradient(135deg,#831843,#ec4899)"></span>Agentes de IA<small>2</small></div>
+ <div class="bi nb">+ Criar novo quadro</div>
+</div>
+<div class="dock"><div>📥 Caixa de entrada</div><div class="on">🗓️ Planejador</div><div>▦ Quadro</div><div style="background:rgba(255,255,255,.1)">⇄ Mudar de quadros</div></div>
+</body></html>

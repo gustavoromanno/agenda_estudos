@@ -1,0 +1,52 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="common.css">
+<style>
+.wrap{display:flex;height:calc(100% - 106px)}
+.inbox{width:310px;background:#f1f4f9;margin:12px 0 12px 12px;border-radius:12px;padding:14px;box-shadow:0 10px 30px rgba(0,0,0,.35);overflow:hidden}
+.inbox h2{font-size:15px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.inbox p.sub{font-size:12px;color:#64748b;margin:4px 0 12px}
+.add{background:#fff;border:1px dashed #b8c4d6;border-radius:8px;padding:9px 12px;font-size:13px;color:#64748b;margin-bottom:12px}
+.src{font-size:11px;color:#64748b;margin-top:6px}
+.lists{display:flex;gap:14px;padding:12px 16px;align-items:flex-start}
+.list{width:300px;background:#eef1f6;border-radius:12px;padding:10px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.lh{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;padding:4px 4px 10px}
+.lh .n{margin-left:auto;font-size:12px;color:#64748b;font-weight:600}
+.lh .d{width:9px;height:9px;border-radius:50%}
+.addc{font-size:13px;color:#475569;padding:6px 6px;font-weight:600}
+.ghostl{width:260px;background:rgba(255,255,255,.12);border-radius:12px;padding:12px;color:#e2e8f0;font-weight:600;font-size:14px}
+.week{position:absolute;right:20px;top:118px;width:250px;background:#fff;border-radius:12px;padding:14px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.week h4{font-size:13px;font-weight:700;margin-bottom:8px}
+.week .big{font-size:24px;font-weight:700;color:#0b1f3a}
+.week small{font-size:12px;color:#64748b}
+</style></head><body>
+<div class="top"><div class="logo">ES</div><div class="brand">ERP Study Scheduler</div><div class="search">🔍 Pesquisar matérias, módulos…</div><div class="btnc">+ Criar</div><div class="av">GR</div></div>
+<div class="boardbar"><h1>Visão Geral</h1><span class="chip">Todos os módulos</span><span class="chip">8 matérias · 34h</span><div class="sp"></div><span class="ghost">⚡ Distribuir horas</span><span class="ghost">Filtros</span><span class="ghost">Compartilhar</span></div>
+<div class="wrap">
+ <div class="inbox">
+  <h2>📥 Caixa de entrada <span class="tag m-v" style="background:#e0eaff;color:#1a4480">3 novas</span></h2>
+  <p class="sub">Ideias e tópicos capturados que ainda não viraram card no quadro.</p>
+  <div class="add">+ Capturar novo tópico…</div>
+  <div class="card"><h3>Rateio de despesas por centro de custo</h3><div class="meta"><span class="tag m-f">Finanças</span></div><div class="src">Capturado ontem · NotebookLM</div></div>
+  <div class="card"><h3>Devolução de venda e NF de entrada</h3><div class="meta"><span class="tag m-v">Vendas</span></div><div class="src">Capturado há 2 dias</div></div>
+  <div class="card"><h3>Agente que avisa estoque mínimo</h3><div class="meta"><span class="tag m-i">Agentes de IA</span></div><div class="src">Capturado há 3 dias</div></div>
+ </div>
+ <div class="lists">
+  <div class="list"><div class="lh"><span class="d" style="background:#94a3b8"></span>A Fazer<span class="n">5</span></div>
+   <div class="card"><div class="lbls"><i style="background:#dc2626"></i><i style="background:#7c3aed"></i></div><h3>Regras de Emissão e CFOP de Venda</h3><div class="meta"><span class="tag m-v">Vendas</span><span class="tag hot">Quente</span><span>⏱ 4h</span></div></div>
+   <div class="card"><div class="lbls"><i style="background:#dc2626"></i><i style="background:#7c3aed"></i></div><h3>Ajuste de Impostos e Rejeições SEFAZ</h3><div class="meta"><span class="tag m-v">Vendas</span><span class="tag hot">Quente</span><span>⏱ 5h</span></div></div>
+   <div class="card"><div class="lbls"><i style="background:#d97706"></i><i style="background:#0d9488"></i></div><h3>Gestão de Ordens de Produção (OP)</h3><div class="meta"><span class="tag m-e">Estoque</span><span class="tag warm">Morna</span><span>⏱ 5h</span></div></div>
+   <div class="card"><div class="lbls"><i style="background:#d97706"></i><i style="background:#16a34a"></i></div><h3>Conciliação Bancária e Extrato</h3><div class="meta"><span class="tag m-f">Finanças</span><span class="tag warm">Morna</span><span>⏱ 4h</span></div></div>
+   <div class="card"><div class="lbls"><i style="background:#0284c7"></i><i style="background:#db2777"></i></div><h3>Permissões de Acesso aos Agentes</h3><div class="meta"><span class="tag m-i">Agentes de IA</span><span class="tag cold">Fria</span><span>⏱ 2h</span></div></div>
+   <div class="addc">+ Adicionar um cartão</div></div>
+  <div class="list"><div class="lh"><span class="d" style="background:#2563eb"></span>Em Andamento<span class="n">3</span></div>
+   <div class="card"><div class="lbls"><i style="background:#dc2626"></i><i style="background:#0d9488"></i></div><h3>Cálculo de Custo Médio (CMC)</h3><div class="meta"><span class="tag m-e">Estoque</span><span class="tag hot">Quente</span><span class="date ok">📅 Seg–Ter</span></div><div class="meta" style="margin-top:6px">6h de 6h planejadas</div><div class="bar"><b style="width:100%;background:#16a34a"></b></div></div>
+   <div class="card"><div class="lbls"><i style="background:#dc2626"></i><i style="background:#db2777"></i></div><h3>Criação de Rotinas e Gatilhos</h3><div class="meta"><span class="tag m-i">Agentes de IA</span><span class="tag hot">Quente</span><span class="date ok">📅 Qua</span></div><div class="meta" style="margin-top:6px">2h de 5h · faltam 3h</div><div class="bar"><b style="width:40%"></b></div></div>
+   <div class="card"><div class="lbls"><i style="background:#0284c7"></i><i style="background:#16a34a"></i></div><h3>Baixa em Lote e DRE</h3><div class="meta"><span class="tag m-f">Finanças</span><span class="tag cold">Fria</span><span class="date">Sem horas</span></div><div class="meta" style="margin-top:6px">0h de 3h · próxima semana</div><div class="bar"><b style="width:0"></b></div></div>
+   <div class="addc">+ Adicionar um cartão</div></div>
+  <div class="list"><div class="lh"><span class="d" style="background:#16a34a"></span>Concluído<span class="n">0</span></div>
+   <div style="border:2px dashed #cbd5e1;border-radius:9px;padding:26px 10px;text-align:center;color:#64748b;font-size:13px">Solte um card aqui</div>
+   <div class="addc">+ Adicionar um cartão</div></div>
+ </div>
+</div>
+<div class="week"><h4>📅 Esta semana</h4><div class="big">8h <small>de 8h alocadas</small></div><div class="bar"><b style="width:100%"></b></div><small style="display:block;margin-top:8px">Faltam 6h nas matérias em andamento → próxima semana</small></div>
+<div class="dock"><div>📥 Caixa de entrada</div><div>🗓️ Planejador</div><div class="on">▦ Quadro</div><div>⇄ Mudar de quadros</div></div>
+</body></html>
