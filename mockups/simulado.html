@@ -1,0 +1,50 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="common.css">
+<style>
+.wrap{position:absolute;left:20px;right:20px;top:118px;bottom:92px;display:grid;grid-template-columns:1fr 300px;gap:14px}
+.p{background:#fff;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.3);padding:22px 26px}
+.qh{display:flex;align-items:center;gap:10px;font-size:13px;color:#64748b;font-weight:600}
+.qh .timer{margin-left:auto;background:#eef1f6;color:#0b1f3a;padding:5px 10px;border-radius:7px;font-weight:700}
+.prog{height:6px;background:#e2e8f0;border-radius:3px;margin:12px 0 22px}.prog b{display:block;height:100%;width:35%;background:#2563eb;border-radius:3px}
+.q{font-size:20px;font-weight:600;line-height:1.45;color:#0b1f3a;margin-bottom:20px}
+.opt{display:flex;gap:14px;align-items:center;border:1.5px solid #dbe1ea;border-radius:10px;padding:13px 16px;margin-bottom:10px;font-size:15px;font-weight:500}
+.opt .k{width:30px;height:30px;border-radius:50%;background:#eef1f6;display:grid;place-items:center;font-weight:700;font-size:13px;color:#475569}
+.opt.ok{border-color:#16a34a;background:#f0fdf4}.opt.ok .k{background:#16a34a;color:#fff}
+.fb{margin-top:16px;border-radius:10px;background:#f0fdf4;border:1px solid #bbf7d0;padding:14px 16px;font-size:14px;line-height:1.5;color:#14532d}
+.fb b{display:block;margin-bottom:4px}
+.act{display:flex;gap:10px;margin-top:18px}
+.b1{background:#2563eb;color:#fff;border-radius:8px;padding:10px 18px;font-weight:600;font-size:14px}
+.b2{border:1px solid #dbe1ea;border-radius:8px;padding:10px 18px;font-weight:600;font-size:14px;color:#334155}
+.side h3{font-size:14px;font-weight:700;margin-bottom:10px}
+.nums{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:18px}
+.nums span{height:38px;border-radius:8px;display:grid;place-items:center;font-weight:700;font-size:13px;background:#eef1f6;color:#475569}
+.nums .c{background:#dcfce7;color:#15803d}.nums .w{background:#fee2e2;color:#b91c1c}.nums .cur{outline:2px solid #2563eb;background:#fff;color:#2563eb}
+.kv{display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-bottom:1px solid #f1f5f9}
+.kv b{font-weight:700}
+</style></head><body>
+<div class="top"><div class="logo">ES</div><div class="brand">ERP Study Scheduler</div><div class="search">🔍 Pesquisar matérias, módulos…</div><div class="btnc">+ Criar</div><div class="av">GR</div></div>
+<div class="boardbar"><h1>Simulado · Vendas</h1><span class="chip">20 questões</span><span class="chip">Matérias: CFOP, Rejeições SEFAZ</span><div class="sp"></div><span class="ghost">Pausar</span><span class="ghost">Encerrar</span></div>
+<div class="wrap">
+ <div class="p">
+  <div class="qh"><span>Questão 7 de 20</span><span class="tag m-v">Vendas</span><span class="tag hot">Quente</span><span class="timer">⏱ 12:48</span></div>
+  <div class="prog"><b></b></div>
+  <div class="q">Uma empresa vai vender uma mercadoria comprada de terceiros para um cliente de <u>outro estado</u>. Qual CFOP deve ser usado na NF-e?</div>
+  <div class="opt"><span class="k">A</span>5.102: venda de mercadoria adquirida de terceiros</div>
+  <div class="opt ok"><span class="k">B</span>6.102: venda de mercadoria adquirida de terceiros ✔</div>
+  <div class="opt"><span class="k">C</span>5.405: venda com substituição tributária</div>
+  <div class="opt"><span class="k">D</span>1.102: compra para comercialização</div>
+  <div class="fb"><b>✅ Correto!</b>O primeiro dígito indica o destino da operação: 5 = dentro do estado e 6 = para outro estado. O 1 é usado em entradas, como compras.</div>
+  <div class="act"><span class="b1">Próxima questão →</span><span class="b2">🗒️ Salvar no bloco de notas</span><span class="b2">🚩 Revisar depois</span></div>
+ </div>
+ <div class="p side">
+  <h3>Questões</h3>
+  <div class="nums"><span class="c">1</span><span class="c">2</span><span class="w">3</span><span class="c">4</span><span class="c">5</span><span class="w">6</span><span class="c cur">7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span></div>
+  <h3>Parcial</h3>
+  <div class="kv"><span>Acertos</span><b style="color:#15803d">5 de 7</b></div>
+  <div class="kv"><span>Nota parcial</span><b>71</b></div>
+  <div class="kv"><span>Sua melhor nota</span><b>82</b></div>
+  <div class="kv"><span>Autoavaliação</span><b>3 · Intermediário</b></div>
+  <p style="font-size:12px;color:#64748b;margin-top:12px;line-height:1.5">No fim, a nota vai para o painel de Desempenho e as questões que você errou viram cards de revisão na Caixa de entrada.</p>
+ </div>
+</div>
+<div class="dock"><div>📥 Caixa de entrada</div><div>🗓️ Planejador</div><div>▦ Quadro</div><div class="on">📊 Desempenho</div><div>⇄ Mudar de quadros</div></div>
+</body></html>

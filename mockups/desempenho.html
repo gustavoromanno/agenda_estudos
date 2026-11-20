@@ -1,0 +1,81 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="common.css">
+<style>
+body{height:1000px}
+.g{position:absolute;left:20px;right:20px;top:118px;bottom:92px;display:grid;grid-template-columns:1.55fr 1fr;grid-template-rows:auto 1fr;gap:14px}
+.p{background:#fff;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.3);padding:14px 16px;overflow:hidden}
+.p h2{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.p h2 small{margin-left:auto;font-size:12px;color:#64748b;font-weight:500}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#64748b;padding:6px 8px;border-bottom:1px solid #e2e8f0}
+td{padding:8px;border-bottom:1px solid #f1f5f9;vertical-align:middle}
+td b{font-weight:700}
+.dots{display:flex;gap:4px}.dots i{width:16px;height:16px;border-radius:50%;background:#e2e8f0;display:block}.dots i.f{background:#2563eb}
+.lvl{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:#eef1f6;color:#334155}
+.l1{background:#fee2e2;color:#b91c1c}.l2{background:#ffedd5;color:#c2410c}.l3{background:#fef3c7;color:#a16207}.l4{background:#dcfce7;color:#15803d}.l5{background:#e0eaff;color:#1d4ed8}
+.pbar{display:flex;align-items:center;gap:8px}.pbar .bar{flex:1;margin:0;height:7px}
+.gap{font-size:12px;font-weight:600}
+.up{color:#15803d}.down{color:#c2410c}.eq{color:#64748b}
+.ring{display:flex;gap:18px;align-items:center}
+.ring svg{flex-shrink:0}
+.scale{font-size:12px;color:#475569;line-height:1.55}
+.scale b{display:inline-block;width:18px}
+.tip{display:flex;gap:10px;padding:10px;border-radius:10px;background:#f8fafc;border:1px solid #e2e8f0;margin-bottom:8px;font-size:13px;line-height:1.4}
+.tip .ic{font-size:18px}
+.tip a{color:#2563eb;font-weight:600;font-size:12px;display:inline-block;margin-top:4px}
+.right{display:flex;flex-direction:column;gap:14px;grid-row:1 / span 2;grid-column:2}
+.bottom{display:grid;grid-template-columns:1fr 1fr;gap:14px;grid-column:1}
+.note{border-left:3px solid #2563eb;background:#f8fafc;border-radius:6px;padding:8px 10px;margin-bottom:8px;font-size:12.5px;line-height:1.4}
+.note .meta{margin-top:5px}
+.nadd{border:1px dashed #b8c4d6;border-radius:8px;padding:8px 10px;font-size:13px;color:#64748b;margin-bottom:10px}
+.sc{font-weight:700}
+</style></head><body>
+<div class="top"><div class="logo">ES</div><div class="brand">ERP Study Scheduler</div><div class="search">🔍 Pesquisar matérias, módulos…</div><div class="btnc">+ Criar</div><div class="av">GR</div></div>
+<div class="boardbar"><h1>Desempenho</h1><span class="chip">Prontidão geral: 53%</span><span class="chip">6 provas e simulados</span><div class="sp"></div><span class="ghost">📝 Novo simulado</span><span class="ghost">🧪 Prova completa</span><span class="ghost">⬇ Exportar</span></div>
+<div class="g">
+ <div class="p">
+  <h2>🎯 Matriz de conhecimento <small>Autoavaliação (1 a 5) × nota das provas</small></h2>
+  <table>
+   <tr><th>Módulo</th><th>Autoavaliação</th><th>Nota média</th><th>Nível pelas provas</th><th>Prontidão</th><th>Comparação</th></tr>
+   <tr><td><b>CRM</b></td><td><div class="dots"><i class="f"></i><i class="f"></i><i></i><i></i><i></i></div></td><td class="sc">48</td><td><span class="lvl l3">3 · Intermediário</span></td><td><div class="pbar"><div class="bar"><b style="width:45%;background:#d97706"></b></div>45%</div></td><td class="gap up">↑ Você sabe mais do que acha</td></tr>
+   <tr><td><b>Vendas</b></td><td><div class="dots"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i></div></td><td class="sc">82</td><td><span class="lvl l4">4 · Avançado</span></td><td><div class="pbar"><div class="bar"><b style="width:73%;background:#16a34a"></b></div>73%</div></td><td class="gap up">↑ Você sabe mais do que acha</td></tr>
+   <tr><td><b>Compras</b></td><td><div class="dots"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i></div></td><td class="sc">61</td><td><span class="lvl l3">3 · Intermediário</span></td><td><div class="pbar"><div class="bar"><b style="width:61%;background:#2563eb"></b></div>61%</div></td><td class="gap eq">= Alinhado</td></tr>
+   <tr><td><b>Serviços</b></td><td><div class="dots"><i class="f"></i><i></i><i></i><i></i><i></i></div></td><td class="sc">—</td><td><span class="lvl l1">Sem provas</span></td><td><div class="pbar"><div class="bar"><b style="width:8%;background:#dc2626"></b></div>8%</div></td><td class="gap eq">Faça o diagnóstico</td></tr>
+   <tr><td><b>Finanças</b></td><td><div class="dots"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i></div></td><td class="sc">55</td><td><span class="lvl l3">3 · Intermediário</span></td><td><div class="pbar"><div class="bar"><b style="width:65%;background:#2563eb"></b></div>65%</div></td><td class="gap down">↓ Provas abaixo da sua nota</td></tr>
+   <tr><td><b>Geral</b> <span style="color:#64748b;font-size:11.5px">Portal Omie, MFA, lentidão/desconexão</span></td><td><div class="dots"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i></div></td><td class="sc">74</td><td><span class="lvl l4">4 · Avançado</span></td><td><div class="pbar"><div class="bar"><b style="width:68%;background:#16a34a"></b></div>68%</div></td><td class="gap up">↑ Você sabe mais do que acha</td></tr>
+  </table>
+ </div>
+ <div class="bottom">
+  <div class="p"><h2>📝 Simulados e provas <small>Últimos 5</small></h2>
+   <table>
+    <tr><th>Data</th><th>Tipo</th><th>Módulo</th><th>Acertos</th><th>Nota</th></tr>
+    <tr><td>18/11</td><td>Simulado</td><td><span class="tag m-v">Vendas</span></td><td>16/20</td><td class="sc" style="color:#15803d">82</td></tr>
+    <tr><td>15/11</td><td>Prova</td><td><span class="tag m-f">Finanças</span></td><td>11/20</td><td class="sc" style="color:#c2410c">55</td></tr>
+    <tr><td>12/11</td><td>Simulado</td><td><span class="tag" style="background:#e2e8f0;color:#334155">Geral</span></td><td>15/20</td><td class="sc" style="color:#15803d">74</td></tr>
+    <tr><td>08/11</td><td>Mini prova</td><td><span class="tag" style="background:#e0eaff;color:#1d4ed8">CRM</span></td><td>5/10</td><td class="sc" style="color:#c2410c">48</td></tr>
+    <tr><td>05/11</td><td>Simulado</td><td><span class="tag m-e">Compras</span></td><td>12/20</td><td class="sc">61</td></tr>
+   </table></div>
+  <div class="p"><h2>🗒️ Bloco de notas <small>12 anotações</small></h2>
+   <div class="nadd">+ Nova anotação…</div>
+   <div class="note" style="border-color:#7c3aed">CFOP 5.xxx = operação dentro do estado; 6.xxx = para outro estado.<div class="meta"><span class="tag m-v">Vendas</span><span>18/11</span></div></div>
+   <div class="note" style="border-color:#64748b">MFA: se o código não funcionar, conferir a hora do celular antes de gerar outro.<div class="meta"><span class="tag" style="background:#e2e8f0;color:#334155">Geral</span><span>12/11</span></div></div>
+   <div class="note" style="border-color:#16a34a">Errei 4 de 6 questões de conciliação. Revisar a importação de extrato (OFX).<div class="meta"><span class="tag m-f">Finanças</span><span>15/11</span></div></div>
+  </div>
+ </div>
+ <div class="right">
+  <div class="p"><h2>📈 Quão preparado você está</h2>
+   <div class="ring">
+    <svg width="132" height="132" viewBox="0 0 132 132"><circle cx="66" cy="66" r="54" fill="none" stroke="#e2e8f0" stroke-width="14"/><circle cx="66" cy="66" r="54" fill="none" stroke="#2563eb" stroke-width="14" stroke-linecap="round" stroke-dasharray="339.3" stroke-dashoffset="159.5" transform="rotate(-90 66 66)"/><text x="66" y="64" text-anchor="middle" font-size="28" font-weight="700" fill="#0b1f3a" font-family="Inter">53%</text><text x="66" y="84" text-anchor="middle" font-size="12" fill="#64748b" font-family="Inter">Intermediário</text></svg>
+    <div class="scale"><b>1</b>Não conhece<br><b>2</b>Básico<br><b style="color:#2563eb">3</b><span style="color:#2563eb;font-weight:700">Intermediário ← você</span><br><b>4</b>Avançado<br><b>5</b>Referência</div>
+   </div>
+   <p style="font-size:12px;color:#64748b;margin-top:10px">Prontidão = 60% nota das provas + 40% autoavaliação. O nível 5 (Referência) também pede acompanhar melhorias e analisar tickets, coisas que uma prova não mede.</p>
+  </div>
+  <div class="p" style="flex:1"><h2>💡 Dicas para evoluir</h2>
+   <div class="tip"><span class="ic">🚨</span><div><b>Serviços está descoberto.</b> Você ainda não fez nenhuma prova. Comece pelo diagnóstico de 10 questões (cerca de 15 min).<br><a>Iniciar diagnóstico →</a></div></div>
+   <div class="tip"><span class="ic">📉</span><div><b>Finanças:</b> sua autoavaliação (4) está acima das provas (55). Você errou 4 de 6 questões de Conciliação Bancária.<br><a>Adicionar 3h ao Planejador →</a></div></div>
+   <div class="tip"><span class="ic">🚀</span><div><b>Vendas:</b> a nota 82 já indica nível Avançado. Para chegar a Referência, analise tickets de rejeição SEFAZ e registre o que aprendeu no bloco de notas.<br><a>Ver plano para nível 5 →</a></div></div>
+   <div class="tip"><span class="ic">💪</span><div><b>CRM:</b> você se avaliou com 2, mas acerta como Intermediário. Faça mais um simulado para confirmar e suba a nota.<br><a>Novo simulado de CRM →</a></div></div>
+  </div>
+ </div>
+</div>
+<div class="dock"><div>📥 Caixa de entrada</div><div>🗓️ Planejador</div><div>▦ Quadro</div><div class="on">📊 Desempenho</div><div>⇄ Mudar de quadros</div></div>
+</body></html>
