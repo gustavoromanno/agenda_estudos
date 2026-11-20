@@ -8,15 +8,15 @@ window.ERP_DATA = (() => {
 
   /* ---------- MÓDULOS (quadros) ---------- */
   const modulos = [
-    { id: "crm", nome: "CRM", desc: "Funil, oportunidades e relacionamento", cor: "#3b82f6", tagBg: "#e0eaff", tagFg: "#1d4ed8", fundo: ["#0b1f3a", "#1d4ed8"] },
-    { id: "vendas", nome: "Vendas e NF-e", desc: "Pedidos, CFOP, NF-e e SEFAZ", cor: "#7c3aed", tagBg: "#ede9fe", tagFg: "#6d28d9", fundo: ["#1e0b4a", "#6d28d9"] },
-    { id: "compras", nome: "Compras, Estoque e Produção", desc: "Compras, custo médio e ordens de produção", cor: "#0d9488", tagBg: "#ccfbf1", tagFg: "#0f766e", fundo: ["#042f2e", "#0f766e"] },
-    { id: "servicos", nome: "Serviços", desc: "NFS-e, ISS, retenções e contratos", cor: "#ea580c", tagBg: "#ffedd5", tagFg: "#c2410c", fundo: ["#431407", "#c2410c"] },
-    { id: "financas", nome: "Finanças", desc: "Contas, conciliação e DRE", cor: "#16a34a", tagBg: "#dcfce7", tagFg: "#15803d", fundo: ["#052e16", "#15803d"] },
+    { id: "crm", nome: "CRM", desc: "Funil, oportunidades e relacionamento", cor: "#1a67bf", tagBg: "#dbe8f8", tagFg: "#1a5fb0", fundo: ["#0a2a52", "#1a67bf"] },
+    { id: "vendas", nome: "Vendas e NF-e", desc: "Pedidos, CFOP, NF-e e SEFAZ", cor: "#ff9c24", tagBg: "#fff1df", tagFg: "#b35f00", fundo: ["#5a2e00", "#e08410"] },
+    { id: "servicos", nome: "Serviços e NFS-e", desc: "Faturamento de notas de serviço eletrônicas integradas com a prefeitura", cor: "#00bfb7", tagBg: "#d6f7f5", tagFg: "#00807a", fundo: ["#00403d", "#009f98"] },
+    { id: "compras", nome: "Compras, Estoque e Produção", desc: "Compras, custo médio e ordens de produção", cor: "#fe5b4a", tagBg: "#ffe3e0", tagFg: "#c4372a", fundo: ["#5c1710", "#e04a3a"] },
+    { id: "financas", nome: "Finanças", desc: "Contas, conciliação e DRE", cor: "#6ec400", tagBg: "#ecf8d9", tagFg: "#4a8700", fundo: ["#213d00", "#5aa300"] },
     { id: "geral", nome: "Geral", desc: "Portal Omie, MFA, lentidão/desconexão", cor: "#64748b", tagBg: "#e2e8f0", tagFg: "#334155", fundo: ["#0f172a", "#475569"] },
-    { id: "agentes", nome: "Agentes de IA", desc: "Rotinas, gatilhos e permissões", cor: "#db2777", tagBg: "#fce7f3", tagFg: "#be185d", fundo: ["#500724", "#be185d"], extra: true },
-    { id: "contador", nome: "Painel do Contador", desc: "Acesso do contador e envio de arquivos", cor: "#ca8a04", tagBg: "#fef9c3", tagFg: "#a16207", fundo: ["#422006", "#a16207"], extra: true },
-    { id: "config", nome: "Configuração Geral do ERP", desc: "Empresa, usuários, certificado e parâmetros", cor: "#0891b2", tagBg: "#cffafe", tagFg: "#0e7490", fundo: ["#083344", "#0e7490"], extra: true },
+    { id: "agentes", nome: "Agentes de IA", desc: "Rotinas, gatilhos e permissões", cor: "#f5d000", tagBg: "#fdf6cc", tagFg: "#7a6600", fundo: ["#3d3400", "#b39800"], extra: true },
+    { id: "contador", nome: "Painel do Contador", desc: "Acesso do contador e envio de arquivos", cor: "#00b1e7", tagBg: "#d9f4fc", tagFg: "#007ea6", fundo: ["#003a4d", "#0095c4"], extra: true },
+    { id: "config", nome: "Configuração Geral do ERP", desc: "Empresa, usuários, certificado e parâmetros", cor: "#7c3aed", tagBg: "#ede9fe", tagFg: "#6d28d9", fundo: ["#1e0b4a", "#6d28d9"], extra: true },
   ];
 
   /* ---------- CARDS INICIAIS (todos nascem em "A Fazer") ---------- */
@@ -30,7 +30,20 @@ window.ERP_DATA = (() => {
     { id: "ia-rotinas", materia: "Criação de Rotinas e Gatilhos", modulo: "agentes", horas: 5, temperatura: "hot" },
     { id: "ia-permissoes", materia: "Permissões de Acesso aos Agentes", modulo: "agentes", horas: 2, temperatura: "cold" },
     { id: "crm-funil", materia: "Funil de Vendas e Oportunidades", modulo: "crm", horas: 3, temperatura: "warm" },
-    { id: "servicos-nfse", materia: "Emissão de NFS-e e Retenções", modulo: "servicos", horas: 4, temperatura: "hot" },
+    /* Serviços e NFS-e: uma matéria por seção da base de conhecimento.
+       Horas estimadas em ~15 min por artigo (arredondado para cima). */
+    { id: "srv-conheca", materia: "Conheça o Módulo: checklist, ticket médio e perguntas frequentes", modulo: "servicos", horas: 1, temperatura: "warm" },
+    { id: "srv-cadastro", materia: "Cadastro de Serviços (em lote, via XML, código de serviço e CNAE)", modulo: "servicos", horas: 2, temperatura: "hot" },
+    { id: "srv-importacao", materia: "Importação e Exportação da NFS-e (XML de saída e recibos)", modulo: "servicos", horas: 1, temperatura: "warm" },
+    { id: "srv-recibo", materia: "Recibo de Prestação de Serviço", modulo: "servicos", horas: 1, temperatura: "cold" },
+    { id: "srv-nacional", materia: "NFS-e Nacional: migração, ambiente nacional e Simples Nacional", modulo: "servicos", horas: 1, temperatura: "hot" },
+    { id: "srv-os-cadastros", materia: "Ordens de Serviço: Cadastros", modulo: "servicos", horas: 4, temperatura: "warm" },
+    { id: "srv-os-config", materia: "Ordens de Serviço: Configurações", modulo: "servicos", horas: 3, temperatura: "warm" },
+    { id: "srv-os-faturamento", materia: "Ordens de Serviço: Faturamento", modulo: "servicos", horas: 4, temperatura: "hot" },
+    { id: "srv-ct-cadastros", materia: "Contratos de Serviço: Cadastros", modulo: "servicos", horas: 4, temperatura: "warm" },
+    { id: "srv-ct-config", materia: "Contratos de Serviço: Configurações", modulo: "servicos", horas: 2, temperatura: "cold" },
+    { id: "srv-ct-faturamento", materia: "Contratos de Serviço: Faturamento", modulo: "servicos", horas: 3, temperatura: "hot" },
+    { id: "srv-config-gerais", materia: "Configurações Gerais: integração com a prefeitura, IBPT, retenções e emissão", modulo: "servicos", horas: 3, temperatura: "hot" },
     { id: "geral-acesso", materia: "Acesso ao Portal, MFA e Lentidão", modulo: "geral", horas: 2, temperatura: "warm" },
     { id: "contador-painel", materia: "Acesso do Contador e Envio de Arquivos", modulo: "contador", horas: 3, temperatura: "cold" },
     { id: "config-empresa", materia: "Cadastro da Empresa e Parâmetros Gerais", modulo: "config", horas: 3, temperatura: "warm" },
@@ -317,5 +330,10 @@ window.ERP_DATA = (() => {
       "As categorias são a base dos relatórios gerenciais. Uma categoria errada distorce o resultado."),
   ];
 
-  return { modulos, cards, inbox, questoes };
+  /* Versão da base: quando sobe, cards novos entram para quem já usa o app
+     e os cards listados em `removidos` saem (se ainda estiverem em "A Fazer"). */
+  const versao = 2;
+  const removidos = ["servicos-nfse"];
+
+  return { versao, removidos, modulos, cards, inbox, questoes };
 })();

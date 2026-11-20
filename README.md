@@ -22,7 +22,7 @@ Além do core em Java, o projeto tem uma versão **100% client-side** em Vanilla
 | 🗓️ **Planejador** | Agenda do mês com as horas distribuídas por dia (Greedy por temperatura: Quente → Morna → Fria), nos dias de estudo que você escolher. |
 | ▦ **Quadro** | Kanban *A Fazer → Em Andamento → Concluído*, com drag and drop nativo (HTML5), criação e edição de cards e busca. |
 | 📊 **Desempenho** | Autoavaliação de 1 a 5 por módulo, notas de simulados e provas, prontidão (60% provas + 40% autoavaliação), dicas para evoluir e bloco de notas. |
-| ⇄ **Mudar de quadros** | Troca entre a Visão Geral e os módulos: CRM, Vendas e NF-e, Compras/Estoque/Produção, Serviços, Finanças, Geral e os extras Agentes de IA, Painel do Contador e Configuração Geral do ERP. |
+| ⇄ **Mudar de quadros** | Troca entre a Visão Geral e os módulos: CRM, Vendas e NF-e, Serviços e NFS-e, Compras/Estoque/Produção, Finanças, Geral e os extras Agentes de IA, Painel do Contador e Configuração Geral do ERP. |
 
 **Simulados e provas**
 * **Simulado do módulo:** correção e explicação na hora.

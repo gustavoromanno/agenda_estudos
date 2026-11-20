@@ -84,7 +84,20 @@
         tentativas: [],
         planos: {},
         config: { quadro: "todos", dias: [1, 2, 3, 4, 5], inboxAberta: true },
+        versaoBase: DATA.versao,
       };
+    },
+
+    /** Leva cards novos da base para quem já tem dados salvos. */
+    atualizarBase() {
+      const st = this.state;
+      if ((st.versaoBase || 1) >= DATA.versao) return;
+      const removidos = new Set(DATA.removidos || []);
+      st.cards = st.cards.filter((c) => !(removidos.has(c.id) && c.status === "todo"));
+      const ids = new Set(st.cards.map((c) => c.id));
+      DATA.cards.filter((c) => !ids.has(c.id) && !removidos.has(c.id)).forEach((c) => st.cards.push({ ...c, status: "todo" }));
+      st.versaoBase = DATA.versao;
+      this.save();
     },
 
     read(key) {
@@ -105,8 +118,10 @@
           tentativas: arr(salvo.tentativas, []).filter((t) => t && Array.isArray(t.respostas)),
           planos: salvo.planos && typeof salvo.planos === "object" ? salvo.planos : {},
           config: { ...base.config, ...(salvo.config || {}) },
+          versaoBase: salvo.versaoBase || 1,
         };
         if (this.state.config.quadro !== "todos" && !MOD[this.state.config.quadro]) this.state.config.quadro = "todos";
+        this.atualizarBase();
         return;
       }
 
