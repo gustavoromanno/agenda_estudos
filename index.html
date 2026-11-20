@@ -189,7 +189,7 @@
   </aside>
 
   <!-- ===== Diálogo: criar/editar card ===== -->
-  <dialog class="modal" id="card-modal" aria-labelledby="card-modal-title">
+  <dialog class="modal modal--wide" id="card-modal" aria-labelledby="card-modal-title">
     <form method="dialog" id="card-form" class="modal__body">
       <h2 id="card-modal-title">Novo card</h2>
       <label class="label" for="card-title">Matéria</label>
@@ -220,6 +220,7 @@
           </select>
         </div>
       </div>
+      <div class="material" id="card-material" hidden></div>
       <div class="modal__actions">
         <button type="button" class="btn btn--danger" id="card-delete">Excluir</button>
         <span class="spacer"></span>
@@ -277,6 +278,8 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <script src="conteudo.js"></script>
+  <script src="questoes.js"></script>
   <script src="data.js"></script>
   <script src="app.js"></script>
 </body>

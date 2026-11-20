@@ -450,6 +450,17 @@ textarea.input { resize: vertical; }
 .choice__item b { display: block; font-size: 0.9rem; }
 .choice__item small { display: block; color: var(--muted); font-size: 0.78rem; }
 
+.modal--wide { width: min(620px, calc(100% - 24px)); }
+.material { margin-top: 16px; border-top: 1px solid var(--border); padding-top: 12px; }
+.material__head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 8px; }
+.material__head .btn { margin-left: auto; }
+.material__list { max-height: 220px; overflow-y: auto; padding-left: 22px; display: grid; gap: 4px; font-size: 0.82rem; }
+.material__list a { color: var(--brand-700); text-decoration: none; }
+.material__list a:hover { text-decoration: underline; }
+.fonte { display: inline-block; margin-top: 8px; font-size: 0.8rem; font-weight: 600; color: var(--brand-700); text-decoration: none; }
+.fonte:hover { text-decoration: underline; }
+.feedback .fonte { display: block; }
+
 /* ===== Toast ===== */
 .toast {
   position: fixed; left: 50%; bottom: calc(var(--dock-h) + 28px); z-index: 60; transform: translate(-50%, 16px);

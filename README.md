@@ -33,12 +33,33 @@ Além do core em Java, o projeto tem uma versão **100% client-side** em Vanilla
 
 Todos os dados ficam salvos no `localStorage` do navegador.
 
+### Base de conhecimento
+Os cards e as questões vêm da **Central de Ajuda Omie** (1.244 artigos públicos, exportados em Markdown):
+* **84 cards** com os artigos agrupados em sequência, como nas seções da Central. Cada card abre a lista de artigos com link.
+* **Horas** estimadas pelo tamanho do texto (≈ 6.000 palavras por hora de estudo). Cards marcados como *Consulta* (bancos, concessionárias, rejeições) têm horas reduzidas: estude alguns exemplos e consulte o resto quando precisar.
+* **129 questões**: 115 escritas a partir dos artigos, cada uma com a fonte, e 14 gerais para Geral, Agentes de IA e Configuração, que ainda não têm material.
+
 ### Arquivos
 * `index.html`: estrutura das telas e diálogos.
 * `style.css`: design system e layout responsivo (CSS Grid e Flexbox).
 * `app.js`: Store, Services (Kanban, Agenda Greedy, Desempenho, Quiz) e Views, espelhando a arquitetura Java.
-* `data.js`: módulos, cards iniciais e **banco de questões**. Para trocar ou ampliar as questões, edite só este arquivo.
+* `data.js`: módulos, cards manuais e junção da base.
+* `conteudo.js`: cards e artigos (gerado por `ferramentas/montar.py`).
+* `questoes.js`: banco de questões com a fonte de cada uma.
+* `ferramentas/`: scripts para regerar `conteudo.js` a partir dos Markdown e conferir as questões.
 * `mockups/`: imagens de referência do layout.
+
+### Atualizando a base
+```bash
+python3 ferramentas/extrair.py caminho/ajuda_todos_modulos artigos.json
+```
+```bash
+python3 ferramentas/montar.py artigos.json conteudo.js
+```
+```bash
+node ferramentas/checar.js . artigos.json
+```
+Se mudar cards ou questões, suba `versao` em `data.js`: quem já usa o app recebe os cards novos sem perder o progresso.
 
 Para rodar localmente, sirva a pasta:
 ```bash

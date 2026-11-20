@@ -17,6 +17,11 @@
   /* ---------- DOMÍNIO ---------- */
   const MODULOS = DATA.modulos;
   const MOD = Object.fromEntries(MODULOS.map((m) => [m.id, m]));
+  // Cards da base (com a lista de artigos) e títulos dos artigos por link.
+  const BASE = Object.fromEntries(DATA.cards.map((c) => [c.id, c]));
+  const TITULO_ARTIGO = new Map(DATA.cards.flatMap((c) => (c.artigos || []).map(([t, u]) => [u, t])));
+  // No estado salvo vão só os dados editáveis; artigos ficam na base.
+  const cardDaBase = (c) => ({ id: c.id, materia: c.materia, modulo: c.modulo, horas: c.horas, temperatura: c.temperatura, status: "todo" });
 
   const Temperatura = Object.freeze({
     hot: { key: "hot", label: "Quente", nivel: "Alta", peso: 3, cor: "#dc2626" },
@@ -52,6 +57,9 @@
   const shuffle = (arr) => { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
   const modStyle = (id) => { const m = MOD[id]; return m ? `--tag-bg:${m.tagBg};--tag-fg:${m.tagFg}` : ""; };
   const modTag = (id) => `<span class="tag" style="${modStyle(id)}">${esc(MOD[id]?.nome ?? "Todos os módulos")}</span>`;
+  const fonteHtml = (q) => (q.fonte
+    ? `<a class="fonte" href="${esc(q.fonte)}" target="_blank" rel="noopener">📚 Fonte: ${esc(TITULO_ARTIGO.get(q.fonte) || "artigo da Central de Ajuda")} ↗</a>`
+    : "");
   const tempTag = (k) => `<span class="tag tag--${temp(k).key}">${temp(k).nivel} · ${temp(k).label}</span>`;
   const scoreClass = (n) => (n >= 70 ? "score--good" : n >= 45 ? "score--mid" : "score--bad");
 
@@ -77,7 +85,7 @@
     seed() {
       const agora = toISO(hoje());
       return {
-        cards: DATA.cards.map((c) => ({ ...c, status: "todo" })),
+        cards: DATA.cards.map(cardDaBase),
         inbox: DATA.inbox.map((i) => ({ ...i, criadoEm: agora })),
         notas: [],
         autoavaliacao: Object.fromEntries(MODULOS.map((m) => [m.id, 1])),
@@ -94,8 +102,10 @@
       if ((st.versaoBase || 1) >= DATA.versao) return;
       const removidos = new Set(DATA.removidos || []);
       st.cards = st.cards.filter((c) => !(removidos.has(c.id) && c.status === "todo"));
+      // Cards da base já existentes: título e horas acompanham o material; coluna e prioridade são do usuário.
+      st.cards.forEach((c) => { const b = BASE[c.id]; if (b) { c.materia = b.materia; c.horas = b.horas; } delete c.artigos; delete c.referencia; });
       const ids = new Set(st.cards.map((c) => c.id));
-      DATA.cards.filter((c) => !ids.has(c.id) && !removidos.has(c.id)).forEach((c) => st.cards.push({ ...c, status: "todo" }));
+      DATA.cards.filter((c) => !ids.has(c.id) && !removidos.has(c.id)).forEach((c) => st.cards.push(cardDaBase(c)));
       st.versaoBase = DATA.versao;
       this.save();
     },
@@ -408,6 +418,7 @@
   const QuizService = {
     sessao: null,
     MAX_MODULO: 10,
+    MAX_PROVA: 15,
     POR_MODULO_FINAL: 2,
 
     questoesDo(moduloId) { return DATA.questoes.filter((q) => q.modulo === moduloId); },
@@ -416,7 +427,7 @@
       if (tipo === "final") {
         return shuffle(MODULOS.flatMap((m) => shuffle(this.questoesDo(m.id)).slice(0, this.POR_MODULO_FINAL)));
       }
-      return shuffle(this.questoesDo(moduloId)).slice(0, this.MAX_MODULO);
+      return shuffle(this.questoesDo(moduloId)).slice(0, tipo === "prova" ? this.MAX_PROVA : this.MAX_MODULO);
     },
 
     iniciar(tipo, moduloId) {
@@ -562,7 +573,16 @@
       const tt = $(".card__temp", el);
       tt.textContent = t.label;
       tt.classList.add(`tag--${t.key}`);
-      $(".card__hours", el).textContent = `⏱ ${card.horas}h`;
+      const base = BASE[card.id];
+      const nArtigos = base?.artigos?.length || 0;
+      $(".card__hours", el).textContent = `⏱ ${card.horas}h${nArtigos ? ` · 📄 ${nArtigos}` : ""}`;
+      if (base?.referencia) {
+        const ref = document.createElement("span");
+        ref.className = "tag";
+        ref.title = "Card de consulta: estude alguns exemplos e consulte o resto quando precisar";
+        ref.textContent = "Consulta";
+        $(".card__hours", el).before(ref);
+      }
 
       const item = card.status === "doing" && plano?.itens.find((i) => i.cardId === card.id);
       if (item) {
@@ -1008,7 +1028,7 @@
 
       const feedback = revelar
         ? `<div class="feedback ${resp === q.correta ? "feedback--ok" : "feedback--bad"}">
-             <b>${resp === q.correta ? "✅ Correto!" : `❌ Não foi dessa vez. Resposta certa: ${esc(q.opcoes[q.correta])}`}</b>${esc(q.explicacao)}</div>`
+             <b>${resp === q.correta ? "✅ Correto!" : `❌ Não foi dessa vez. Resposta certa: ${esc(q.opcoes[q.correta])}`}</b>${esc(q.explicacao)}${fonteHtml(q)}</div>`
         : "";
 
       const podeAvancar = s.tipo === "simulado" ? revelar : true;
@@ -1101,7 +1121,7 @@
                 <p><b>${esc(q.pergunta)}</b></p>
                 <p class="bad">Sua resposta: ${r === null ? "sem resposta" : esc(q.opcoes[r])}</p>
                 <p class="ok">Resposta certa: ${esc(q.opcoes[q.correta])}</p>
-                <p class="muted">${esc(q.explicacao)}</p>
+                <p class="muted">${esc(q.explicacao)}</p>${fonteHtml(q)}
               </div>`).join("")}
           </div>
         </div>
@@ -1188,7 +1208,7 @@
       const itens = p.itens.map((it, i) => {
         const pct = Math.round((it.alocadas / it.horas) * 100);
         const [txt, cls] = it.faltam === 0
-          ? [`✔ ${it.alocadas}h alocadas, matéria completa nesta semana`, "full"]
+          ? [`✔ ${it.alocadas}h ${it.alocadas === 1 ? "alocada" : "alocadas"}, matéria completa nesta semana`, "full"]
           : it.alocadas > 0
             ? [`${it.alocadas} ${it.alocadas === 1 ? "hora alocada" : "horas alocadas"}, faltam ${plural(it.faltam, "hora", "horas")}`, "partial"]
             : [`Sem horas nesta semana, faltam ${plural(it.faltam, "hora", "horas")}`, "none"];
@@ -1229,6 +1249,12 @@
     init() {
       const dlg = $("#card-modal");
       $("#card-cancel").addEventListener("click", () => dlg.close());
+      $("#card-material").addEventListener("click", (e) => {
+        const b = e.target.closest("[data-material-sim]");
+        if (!b) return;
+        dlg.close();
+        QuizModal.abrir("simulado", b.dataset.materialSim);
+      });
       $("#card-delete").addEventListener("click", () => {
         if (!this.editando || !confirm(`Excluir o card "${this.editando.materia}"?`)) return;
         KanbanService.remover(this.editando.id);
@@ -1252,6 +1278,25 @@
       });
     },
 
+    /** Lista os artigos da Central de Ajuda ligados ao card e as questões dele. */
+    renderMaterial(card) {
+      const box = $("#card-material");
+      const base = card && BASE[card.id];
+      const artigos = base?.artigos || [];
+      const nQuestoes = card ? DATA.questoes.filter((qq) => qq.card === card.id).length : 0;
+      if (!card || (!artigos.length && !nQuestoes)) { box.hidden = true; box.innerHTML = ""; return; }
+      box.hidden = false;
+      box.innerHTML = `
+        <div class="material__head">
+          <b>📚 Material de estudo</b>
+          <span class="muted small">${plural(artigos.length, "artigo", "artigos")} · ${plural(nQuestoes, "questão", "questões")}</span>
+          <button type="button" class="btn btn--light btn--sm" data-material-sim="${esc(card.modulo)}">📝 Simulado do módulo</button>
+        </div>
+        ${base?.referencia ? '<p class="muted small">Card de consulta: estude alguns exemplos e use o resto como referência quando precisar.</p>' : ""}
+        ${artigos.length ? `<ol class="material__list">${artigos.map(([t, u]) =>
+          `<li><a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a></li>`).join("")}</ol>` : ""}`;
+    },
+
     abrir({ card = null, preset = {}, aoSalvar = null } = {}) {
       this.editando = card;
       this.aoSalvar = aoSalvar;
@@ -1264,6 +1309,7 @@
       $("#card-temp").value = d.temperatura;
       $("#card-status").value = d.status;
       $("#card-delete").hidden = !card;
+      this.renderMaterial(card);
       $("#card-modal").showModal();
       $("#card-title").focus();
     },
@@ -1293,7 +1339,7 @@
       $("#quiz-module-wrap").hidden = tipo === "final";
       const qtd = tipo === "final"
         ? MODULOS.reduce((n, m) => n + Math.min(QuizService.POR_MODULO_FINAL, QuizService.questoesDo(m.id).length), 0)
-        : Math.min(QuizService.MAX_MODULO, QuizService.questoesDo($("#quiz-module").value).length);
+        : Math.min(tipo === "prova" ? QuizService.MAX_PROVA : QuizService.MAX_MODULO, QuizService.questoesDo($("#quiz-module").value).length);
       $("#quiz-info").textContent = tipo === "final"
         ? `${qtd} questões, ${QuizService.POR_MODULO_FINAL} de cada módulo. Recomendado para quando terminar os estudos dos módulos.`
         : `${qtd} questões deste módulo, em ordem aleatória.`;
