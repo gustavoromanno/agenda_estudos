@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ERP Study Scheduler — Kanban de estudos com distribuição automática de horas (Greedy Algorithm) em Vanilla JS." />
+  <title>ERP Study Scheduler</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ===== Topbar ===== -->
+  <header class="topbar">
+    <div class="topbar__brand">
+      <span class="topbar__logo" aria-hidden="true">ES</span>
+      <div>
+        <h1 class="topbar__title">ERP Study Scheduler</h1>
+        <p class="topbar__subtitle">Kanban &amp; CRM de Estudos</p>
+      </div>
+    </div>
+    <div class="topbar__actions">
+      <button type="button" class="btn btn--ghost" id="btn-reset" title="Restaura os dados iniciais da base de conhecimento">
+        Restaurar dados
+      </button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- ===== Indicadores ===== -->
+    <section class="stats" aria-label="Indicadores do quadro">
+      <article class="stat">
+        <span class="stat__label">Matérias</span>
+        <strong class="stat__value" id="stat-total">0</strong>
+      </article>
+      <article class="stat">
+        <span class="stat__label">Horas em andamento</span>
+        <strong class="stat__value" id="stat-doing-hours">0h</strong>
+      </article>
+      <article class="stat">
+        <span class="stat__label">Horas concluídas</span>
+        <strong class="stat__value" id="stat-done-hours">0h</strong>
+      </article>
+      <article class="stat">
+        <span class="stat__label">Progresso</span>
+        <strong class="stat__value" id="stat-progress">0%</strong>
+        <div class="progress" aria-hidden="true"><span class="progress__bar" id="stat-progress-bar"></span></div>
+      </article>
+    </section>
+
+    <div class="workspace">
+      <!-- ===== Kanban ===== -->
+      <section class="board" aria-label="Quadro Kanban de estudos">
+        <div class="column" data-status="todo">
+          <header class="column__header">
+            <span class="column__dot column__dot--todo" aria-hidden="true"></span>
+            <h2 class="column__title">A Fazer</h2>
+            <span class="column__count" data-count="todo">0</span>
+          </header>
+          <div class="column__body" data-dropzone="todo" aria-label="Cards em A Fazer"></div>
+        </div>
+
+        <div class="column" data-status="doing">
+          <header class="column__header">
+            <span class="column__dot column__dot--doing" aria-hidden="true"></span>
+            <h2 class="column__title">Em Andamento</h2>
+            <span class="column__count" data-count="doing">0</span>
+          </header>
+          <div class="column__body" data-dropzone="doing" aria-label="Cards em Em Andamento"></div>
+        </div>
+
+        <div class="column" data-status="done">
+          <header class="column__header">
+            <span class="column__dot column__dot--done" aria-hidden="true"></span>
+            <h2 class="column__title">Concluído</h2>
+            <span class="column__count" data-count="done">0</span>
+          </header>
+          <div class="column__body" data-dropzone="done" aria-label="Cards em Concluído"></div>
+        </div>
+      </section>
+
+      <!-- ===== Agenda Inteligente ===== -->
+      <aside class="scheduler" aria-labelledby="scheduler-title">
+        <h2 class="scheduler__title" id="scheduler-title">Agenda Inteligente</h2>
+        <p class="scheduler__text">
+          Distribui suas horas entre os cards em <strong>Em Andamento</strong>,
+          priorizando a temperatura: Quente → Morna → Fria.
+        </p>
+
+        <form id="scheduler-form" class="scheduler__form" novalidate>
+          <label for="input-hours" class="field__label">Quantas horas você tem disponíveis esta semana?</label>
+          <div class="field__row">
+            <input type="number" id="input-hours" class="field__input" min="1" max="168" step="1" placeholder="Ex.: 8" inputmode="numeric" required />
+            <span class="field__suffix">h</span>
+          </div>
+          <p class="field__error" id="hours-error" role="alert"></p>
+          <button type="submit" class="btn btn--primary btn--block">Distribuir Horas</button>
+        </form>
+
+        <div class="legend">
+          <span class="legend__title">Temperatura</span>
+          <span class="badge badge--hot">Quente</span>
+          <span class="badge badge--warm">Morna</span>
+          <span class="badge badge--cold">Fria</span>
+        </div>
+
+        <p class="scheduler__hint">
+          Dica: arraste os cards entre as colunas. No celular, use as setas ◀ ▶ de cada card.
+        </p>
+      </aside>
+    </div>
+  </main>
+
+  <!-- ===== Painel "Seu Plano Semanal" ===== -->
+  <div class="overlay" id="plan-overlay" hidden></div>
+  <aside class="drawer" id="plan-drawer" role="dialog" aria-modal="true" aria-labelledby="plan-title" aria-hidden="true">
+    <header class="drawer__header">
+      <div>
+        <h2 class="drawer__title" id="plan-title">Seu Plano Semanal</h2>
+        <p class="drawer__subtitle" id="plan-subtitle"></p>
+      </div>
+      <button type="button" class="drawer__close" id="plan-close" aria-label="Fechar painel">&times;</button>
+    </header>
+    <div class="drawer__summary" id="plan-summary"></div>
+    <ol class="plan-list" id="plan-list"></ol>
+    <footer class="drawer__footer" id="plan-footer"></footer>
+  </aside>
+
+  <!-- Template do card (clonado via JS) -->
+  <template id="card-template">
+    <article class="card" draggable="true" tabindex="0">
+      <div class="card__top">
+        <span class="card__module"></span>
+        <span class="badge card__priority"></span>
+      </div>
+      <h3 class="card__title"></h3>
+      <div class="card__bottom">
+        <span class="card__hours"></span>
+        <div class="card__moves">
+          <button type="button" class="card__move" data-dir="-1" aria-label="Mover para a coluna anterior">◀</button>
+          <button type="button" class="card__move" data-dir="1" aria-label="Mover para a próxima coluna">▶</button>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
