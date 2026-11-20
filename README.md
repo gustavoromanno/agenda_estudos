@@ -14,16 +14,33 @@ O objetivo principal é demonstrar forte domínio em **Programação Orientada a
 * **Mock Repository:** Simula a conexão com um banco de dados externo (Headless CMS), populando o sistema com dados reais extraídos de documentações de ERP.
 
 ## 🌐 Versão Web (GitHub Pages)
-Além do core em Java, o projeto tem uma versão **100% client-side** em Vanilla JS (sem frameworks), publicada no GitHub Pages:
+Além do core em Java, o projeto tem uma versão **100% client-side** em Vanilla JS (sem frameworks), no estilo Trello, publicada no GitHub Pages. A navegação fica numa barra fixa embaixo:
 
-* **Kanban com Drag and Drop nativo (HTML5):** arraste os cards entre *A Fazer*, *Em Andamento* e *Concluído* (no celular ou pelo teclado, use as setas ◀ ▶).
-* **Persistência em `localStorage`:** as posições dos cards se mantêm após recarregar a página.
-* **Agenda Inteligente (Greedy):** informe as horas da semana e o algoritmo distribui o tempo entre os cards *Em Andamento*, priorizando Quente → Morna → Fria, no painel **Seu Plano Semanal**.
-* **Design responsivo:** CSS Grid e Flexbox, visual de SaaS/ERP.
+| Aba | O que faz |
+| --- | --- |
+| 📥 **Caixa de entrada** | Tópicos anotados que ainda não viraram card. Cada um vira card com um clique. As questões erradas dos simulados também podem vir para cá. |
+| 🗓️ **Planejador** | Agenda do mês com as horas distribuídas por dia (Greedy por temperatura: Quente → Morna → Fria), nos dias de estudo que você escolher. |
+| ▦ **Quadro** | Kanban *A Fazer → Em Andamento → Concluído*, com drag and drop nativo (HTML5), criação e edição de cards e busca. |
+| 📊 **Desempenho** | Autoavaliação de 1 a 5 por módulo, notas de simulados e provas, prontidão (60% provas + 40% autoavaliação), dicas para evoluir e bloco de notas. |
+| ⇄ **Mudar de quadros** | Troca entre a Visão Geral e os módulos: CRM, Vendas e NF-e, Compras/Estoque/Produção, Serviços, Finanças, Geral e os extras Agentes de IA, Painel do Contador e Configuração Geral do ERP. |
 
-Arquivos: `index.html` (estrutura), `style.css` (design system) e `app.js` (Repository, Services e Views, espelhando a arquitetura Java).
+**Simulados e provas**
+* **Simulado do módulo:** correção e explicação na hora.
+* **Prova do módulo:** sem ajuda; o resultado aparece no final.
+* **Prova final:** questões de todos os módulos, com nota por módulo, para o fim dos estudos.
 
-Para rodar localmente, basta abrir o `index.html` no navegador ou servir a pasta:
+**Escala de autoavaliação:** 1 Não conhece · 2 Básico · 3 Intermediário · 4 Avançado · 5 Referência.
+
+Todos os dados ficam salvos no `localStorage` do navegador.
+
+### Arquivos
+* `index.html`: estrutura das telas e diálogos.
+* `style.css`: design system e layout responsivo (CSS Grid e Flexbox).
+* `app.js`: Store, Services (Kanban, Agenda Greedy, Desempenho, Quiz) e Views, espelhando a arquitetura Java.
+* `data.js`: módulos, cards iniciais e **banco de questões**. Para trocar ou ampliar as questões, edite só este arquivo.
+* `mockups/`: imagens de referência do layout.
+
+Para rodar localmente, sirva a pasta:
 ```bash
 python3 -m http.server 8000
 ```

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="ERP Study Scheduler — Kanban de estudos com distribuição automática de horas (Greedy Algorithm) em Vanilla JS." />
+  <meta name="description" content="ERP Study Scheduler — Kanban de estudos, planejador, simulados e desempenho por módulo, em Vanilla JS." />
   <title>ERP Study Scheduler</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -11,142 +11,273 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- ===== Topbar ===== -->
+  <!-- ===== Barra superior ===== -->
   <header class="topbar">
     <div class="topbar__brand">
-      <span class="topbar__logo" aria-hidden="true">ES</span>
-      <div>
-        <h1 class="topbar__title">ERP Study Scheduler</h1>
-        <p class="topbar__subtitle">Kanban &amp; CRM de Estudos</p>
-      </div>
+      <span class="logo" aria-hidden="true">ES</span>
+      <span class="brand">ERP Study Scheduler</span>
     </div>
+    <label class="search">
+      <span class="sr-only">Pesquisar matérias</span>
+      <span aria-hidden="true">🔍</span>
+      <input type="search" id="search" placeholder="Pesquisar matérias, módulos…" autocomplete="off" />
+    </label>
     <div class="topbar__actions">
-      <button type="button" class="btn btn--ghost" id="btn-reset" title="Restaura os dados iniciais da base de conhecimento">
-        Restaurar dados
-      </button>
+      <button type="button" class="btn btn--primary" id="btn-create">+ Criar</button>
+      <button type="button" class="icon-btn" id="btn-reset" title="Restaurar dados iniciais" aria-label="Restaurar dados iniciais">⟲</button>
     </div>
   </header>
 
-  <main class="layout">
-    <!-- ===== Indicadores ===== -->
-    <section class="stats" aria-label="Indicadores do quadro">
-      <article class="stat">
-        <span class="stat__label">Matérias</span>
-        <strong class="stat__value" id="stat-total">0</strong>
-      </article>
-      <article class="stat">
-        <span class="stat__label">Horas em andamento</span>
-        <strong class="stat__value" id="stat-doing-hours">0h</strong>
-      </article>
-      <article class="stat">
-        <span class="stat__label">Horas concluídas</span>
-        <strong class="stat__value" id="stat-done-hours">0h</strong>
-      </article>
-      <article class="stat">
-        <span class="stat__label">Progresso</span>
-        <strong class="stat__value" id="stat-progress">0%</strong>
-        <div class="progress" aria-hidden="true"><span class="progress__bar" id="stat-progress-bar"></span></div>
-      </article>
+  <!-- ===== Barra do quadro (título + ações da tela atual) ===== -->
+  <div class="boardbar">
+    <h1 class="boardbar__title" id="view-title">Quadro</h1>
+    <div class="boardbar__chips" id="view-chips"></div>
+    <div class="boardbar__actions" id="view-actions"></div>
+  </div>
+
+  <main class="app" id="app">
+    <!-- ===== QUADRO (Kanban) ===== -->
+    <section class="view view--board" id="view-quadro" data-view="quadro">
+      <aside class="inbox" id="inbox" aria-labelledby="inbox-title">
+        <header class="inbox__header">
+          <h2 id="inbox-title">📥 Caixa de entrada</h2>
+          <button type="button" class="icon-btn icon-btn--dark" id="inbox-close" aria-label="Fechar caixa de entrada">×</button>
+        </header>
+        <p class="inbox__sub">Ideias e tópicos anotados que ainda não viraram card no quadro.</p>
+        <form class="inbox__form" id="inbox-form">
+          <input type="text" id="inbox-text" class="input" placeholder="+ Anotar novo tópico…" maxlength="140" required />
+          <div class="inbox__form-row">
+            <select id="inbox-module" class="input" aria-label="Módulo do tópico"></select>
+            <button type="submit" class="btn btn--primary btn--sm">Adicionar</button>
+          </div>
+        </form>
+        <ul class="inbox__list" id="inbox-list"></ul>
+      </aside>
+
+      <div class="lists" id="lists" aria-label="Quadro Kanban de estudos">
+        <div class="list" data-status="todo">
+          <header class="list__header"><span class="dot dot--todo"></span><h2>A Fazer</h2><span class="list__count" data-count="todo">0</span></header>
+          <div class="list__body" data-dropzone="todo"></div>
+          <button type="button" class="list__add" data-add="todo">+ Adicionar um cartão</button>
+        </div>
+        <div class="list" data-status="doing">
+          <header class="list__header"><span class="dot dot--doing"></span><h2>Em Andamento</h2><span class="list__count" data-count="doing">0</span></header>
+          <div class="list__body" data-dropzone="doing"></div>
+          <button type="button" class="list__add" data-add="doing">+ Adicionar um cartão</button>
+        </div>
+        <div class="list" data-status="done">
+          <header class="list__header"><span class="dot dot--done"></span><h2>Concluído</h2><span class="list__count" data-count="done">0</span></header>
+          <div class="list__body" data-dropzone="done"></div>
+          <button type="button" class="list__add" data-add="done">+ Adicionar um cartão</button>
+        </div>
+        <aside class="week" id="week-widget" aria-label="Resumo da semana"></aside>
+      </div>
     </section>
 
-    <div class="workspace">
-      <!-- ===== Kanban ===== -->
-      <section class="board" aria-label="Quadro Kanban de estudos">
-        <div class="column" data-status="todo">
-          <header class="column__header">
-            <span class="column__dot column__dot--todo" aria-hidden="true"></span>
-            <h2 class="column__title">A Fazer</h2>
-            <span class="column__count" data-count="todo">0</span>
-          </header>
-          <div class="column__body" data-dropzone="todo" aria-label="Cards em A Fazer"></div>
+    <!-- ===== PLANEJADOR (agenda do mês) ===== -->
+    <section class="view" id="view-planejador" data-view="planejador" hidden>
+      <div class="panel calendar">
+        <div class="calendar__head">
+          <button type="button" class="nav-btn" id="cal-prev" aria-label="Mês anterior">‹</button>
+          <button type="button" class="nav-btn" id="cal-next" aria-label="Próximo mês">›</button>
+          <h2 id="cal-title"></h2>
+          <button type="button" class="btn btn--light btn--sm" id="cal-today">Hoje</button>
+        </div>
+        <div class="calendar__grid" id="cal-grid"></div>
+        <p class="calendar__hint">As horas aparecem depois de usar <strong>⚡ Distribuir horas</strong>. Clique num bloco para abrir o card.</p>
+      </div>
+    </section>
+
+    <!-- ===== DESEMPENHO ===== -->
+    <section class="view" id="view-desempenho" data-view="desempenho" hidden>
+      <div class="perf">
+        <div class="panel perf__matrix">
+          <h2 class="panel__title">🎯 Matriz de conhecimento <small>Clique nas bolinhas para se autoavaliar (1 a 5)</small></h2>
+          <div class="table-wrap"><table class="table" id="matrix"></table></div>
+          <details class="scale-help">
+            <summary>O que significa cada nível?</summary>
+            <ol>
+              <li><b>Não conhece</b>: desconhece o módulo.</li>
+              <li><b>Básico</b>: tem uma noção básica.</li>
+              <li><b>Intermediário</b>: conhece as principais funcionalidades e entende o comportamento.</li>
+              <li><b>Avançado</b>: conhece o comportamento de praticamente todas as funcionalidades e os relatórios, e consegue ajudar em dúvidas.</li>
+              <li><b>Referência</b>: além disso, acompanha as melhorias, analisa tickets do assunto e propaga conhecimento.</li>
+            </ol>
+          </details>
         </div>
 
-        <div class="column" data-status="doing">
-          <header class="column__header">
-            <span class="column__dot column__dot--doing" aria-hidden="true"></span>
-            <h2 class="column__title">Em Andamento</h2>
-            <span class="column__count" data-count="doing">0</span>
-          </header>
-          <div class="column__body" data-dropzone="doing" aria-label="Cards em Em Andamento"></div>
-        </div>
-
-        <div class="column" data-status="done">
-          <header class="column__header">
-            <span class="column__dot column__dot--done" aria-hidden="true"></span>
-            <h2 class="column__title">Concluído</h2>
-            <span class="column__count" data-count="done">0</span>
-          </header>
-          <div class="column__body" data-dropzone="done" aria-label="Cards em Concluído"></div>
-        </div>
-      </section>
-
-      <!-- ===== Agenda Inteligente ===== -->
-      <aside class="scheduler" aria-labelledby="scheduler-title">
-        <h2 class="scheduler__title" id="scheduler-title">Agenda Inteligente</h2>
-        <p class="scheduler__text">
-          Distribui suas horas entre os cards em <strong>Em Andamento</strong>,
-          priorizando a temperatura: Quente → Morna → Fria.
-        </p>
-
-        <form id="scheduler-form" class="scheduler__form" novalidate>
-          <label for="input-hours" class="field__label">Quantas horas você tem disponíveis esta semana?</label>
-          <div class="field__row">
-            <input type="number" id="input-hours" class="field__input" min="1" max="168" step="1" placeholder="Ex.: 8" inputmode="numeric" required />
-            <span class="field__suffix">h</span>
+        <div class="perf__side">
+          <div class="panel">
+            <h2 class="panel__title">📈 Quão preparado você está</h2>
+            <div class="readiness" id="readiness"></div>
+            <p class="muted small">Prontidão = 60% da nota das provas + 40% da autoavaliação. O nível 5 (Referência) também depende da sua autoavaliação, porque inclui coisas que uma prova não mede.</p>
           </div>
-          <p class="field__error" id="hours-error" role="alert"></p>
-          <button type="submit" class="btn btn--primary btn--block">Distribuir Horas</button>
-        </form>
-
-        <div class="legend">
-          <span class="legend__title">Temperatura</span>
-          <span class="badge badge--hot">Quente</span>
-          <span class="badge badge--warm">Morna</span>
-          <span class="badge badge--cold">Fria</span>
+          <div class="panel">
+            <h2 class="panel__title">💡 Dicas para evoluir</h2>
+            <div id="tips"></div>
+          </div>
         </div>
 
-        <p class="scheduler__hint">
-          Dica: arraste os cards entre as colunas. No celular, use as setas ◀ ▶ de cada card.
-        </p>
-      </aside>
-    </div>
+        <div class="panel perf__history">
+          <h2 class="panel__title">📝 Simulados e provas <small id="history-count"></small></h2>
+          <div class="table-wrap"><table class="table" id="history"></table></div>
+        </div>
+
+        <div class="panel perf__notes">
+          <h2 class="panel__title">🗒️ Bloco de notas <small id="notes-count"></small></h2>
+          <form class="notes__form" id="note-form">
+            <textarea id="note-text" class="input" rows="2" placeholder="+ Nova anotação…" maxlength="600" required></textarea>
+            <div class="inbox__form-row">
+              <select id="note-module" class="input" aria-label="Módulo da anotação"></select>
+              <button type="submit" class="btn btn--primary btn--sm">Salvar</button>
+            </div>
+          </form>
+          <ul class="notes" id="notes"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SIMULADO / PROVA ===== -->
+    <section class="view" id="view-quiz" data-view="quiz" hidden>
+      <div class="quiz" id="quiz"></div>
+    </section>
   </main>
 
-  <!-- ===== Painel "Seu Plano Semanal" ===== -->
-  <div class="overlay" id="plan-overlay" hidden></div>
+  <!-- ===== Barra de navegação inferior ===== -->
+  <nav class="dock" aria-label="Navegação principal">
+    <button type="button" class="dock__btn" data-nav="inbox"><span aria-hidden="true">📥</span><span class="dock__label">Caixa de entrada</span><span class="dock__short">Entrada</span><span class="dock__badge" id="inbox-badge" hidden></span></button>
+    <button type="button" class="dock__btn" data-nav="planejador"><span aria-hidden="true">🗓️</span><span class="dock__label">Planejador</span><span class="dock__short">Planejador</span></button>
+    <button type="button" class="dock__btn" data-nav="quadro"><span aria-hidden="true">▦</span><span class="dock__label">Quadro</span><span class="dock__short">Quadro</span></button>
+    <button type="button" class="dock__btn" data-nav="desempenho"><span aria-hidden="true">📊</span><span class="dock__label">Desempenho</span><span class="dock__short">Desempenho</span></button>
+    <button type="button" class="dock__btn" data-nav="boards" aria-haspopup="true" aria-expanded="false" id="btn-boards"><span aria-hidden="true">⇄</span><span class="dock__label">Mudar de quadros</span><span class="dock__short">Quadros</span></button>
+  </nav>
+
+  <!-- Menu "Mudar de quadros" -->
+  <div class="switcher" id="switcher" hidden role="menu" aria-label="Mudar de quadro">
+    <h3>Mudar de quadro</h3>
+    <div id="switcher-list"></div>
+  </div>
+
+  <!-- ===== Painel lateral: Distribuir horas / Seu Plano Semanal ===== -->
+  <div class="overlay" id="overlay" hidden></div>
   <aside class="drawer" id="plan-drawer" role="dialog" aria-modal="true" aria-labelledby="plan-title" aria-hidden="true">
     <header class="drawer__header">
       <div>
         <h2 class="drawer__title" id="plan-title">Seu Plano Semanal</h2>
-        <p class="drawer__subtitle" id="plan-subtitle"></p>
+        <p class="drawer__subtitle">Considera todos os cards em <strong>Em Andamento</strong>, de todos os quadros.</p>
       </div>
-      <button type="button" class="drawer__close" id="plan-close" aria-label="Fechar painel">&times;</button>
+      <button type="button" class="drawer__close" id="plan-close" aria-label="Fechar painel">×</button>
     </header>
-    <div class="drawer__summary" id="plan-summary"></div>
-    <ol class="plan-list" id="plan-list"></ol>
-    <footer class="drawer__footer" id="plan-footer"></footer>
+    <form class="drawer__form" id="plan-form" novalidate>
+      <label for="plan-hours" class="label">Quantas horas você tem disponíveis esta semana?</label>
+      <div class="field">
+        <input type="number" id="plan-hours" class="input" min="1" max="168" step="1" placeholder="Ex.: 8" inputmode="numeric" />
+        <span class="field__suffix">h</span>
+      </div>
+      <fieldset class="days">
+        <legend class="label">Dias de estudo</legend>
+        <div class="days__list" id="plan-days"></div>
+      </fieldset>
+      <div class="segmented" role="radiogroup" aria-label="Semana">
+        <label><input type="radio" name="plan-week" value="0" checked /><span>Esta semana</span></label>
+        <label><input type="radio" name="plan-week" value="1" /><span>Próxima semana</span></label>
+      </div>
+      <p class="field__error" id="plan-error" role="alert"></p>
+      <button type="submit" class="btn btn--primary btn--block">Distribuir Horas</button>
+    </form>
+    <div class="drawer__result" id="plan-result"></div>
   </aside>
 
-  <!-- Template do card (clonado via JS) -->
+  <!-- ===== Diálogo: criar/editar card ===== -->
+  <dialog class="modal" id="card-modal" aria-labelledby="card-modal-title">
+    <form method="dialog" id="card-form" class="modal__body">
+      <h2 id="card-modal-title">Novo card</h2>
+      <label class="label" for="card-title">Matéria</label>
+      <input id="card-title" class="input" required maxlength="120" />
+      <div class="grid-2">
+        <div>
+          <label class="label" for="card-module">Módulo</label>
+          <select id="card-module" class="input"></select>
+        </div>
+        <div>
+          <label class="label" for="card-hours">Horas necessárias</label>
+          <input id="card-hours" class="input" type="number" min="1" max="200" step="1" required />
+        </div>
+        <div>
+          <label class="label" for="card-temp">Prioridade</label>
+          <select id="card-temp" class="input">
+            <option value="hot">Alta · Quente</option>
+            <option value="warm">Média · Morna</option>
+            <option value="cold">Baixa · Fria</option>
+          </select>
+        </div>
+        <div>
+          <label class="label" for="card-status">Coluna</label>
+          <select id="card-status" class="input">
+            <option value="todo">A Fazer</option>
+            <option value="doing">Em Andamento</option>
+            <option value="done">Concluído</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal__actions">
+        <button type="button" class="btn btn--danger" id="card-delete">Excluir</button>
+        <span class="spacer"></span>
+        <button type="button" class="btn btn--light" value="cancel" id="card-cancel">Cancelar</button>
+        <button type="submit" class="btn btn--primary" value="save">Salvar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ===== Diálogo: iniciar simulado/prova ===== -->
+  <dialog class="modal" id="quiz-modal" aria-labelledby="quiz-modal-title">
+    <form method="dialog" id="quiz-form" class="modal__body">
+      <h2 id="quiz-modal-title">Novo simulado ou prova</h2>
+      <div class="choice" role="radiogroup" aria-label="Tipo">
+        <label class="choice__item"><input type="radio" name="quiz-type" value="simulado" checked />
+          <span><b>📝 Simulado do módulo</b><small>Mostra a resposta e a explicação na hora. Ideal para estudar.</small></span></label>
+        <label class="choice__item"><input type="radio" name="quiz-type" value="prova" />
+          <span><b>🧪 Prova do módulo</b><small>Sem ajuda durante a prova. O resultado aparece só no final.</small></span></label>
+        <label class="choice__item"><input type="radio" name="quiz-type" value="final" />
+          <span><b>🏁 Prova final (todos os módulos)</b><small>Para o fim dos estudos: questões de todos os módulos, com nota por módulo.</small></span></label>
+      </div>
+      <div id="quiz-module-wrap">
+        <label class="label" for="quiz-module">Módulo</label>
+        <select id="quiz-module" class="input"></select>
+      </div>
+      <p class="muted small" id="quiz-info"></p>
+      <div class="modal__actions">
+        <span class="spacer"></span>
+        <button type="button" class="btn btn--light" id="quiz-cancel">Cancelar</button>
+        <button type="submit" class="btn btn--primary">Começar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Template do card do quadro -->
   <template id="card-template">
     <article class="card" draggable="true" tabindex="0">
-      <div class="card__top">
-        <span class="card__module"></span>
-        <span class="badge card__priority"></span>
-      </div>
+      <div class="card__labels"><i class="card__label card__label--temp"></i><i class="card__label card__label--mod"></i></div>
       <h3 class="card__title"></h3>
-      <div class="card__bottom">
+      <div class="card__meta">
+        <span class="tag card__module"></span>
+        <span class="tag card__temp"></span>
         <span class="card__hours"></span>
-        <div class="card__moves">
-          <button type="button" class="card__move" data-dir="-1" aria-label="Mover para a coluna anterior">◀</button>
-          <button type="button" class="card__move" data-dir="1" aria-label="Mover para a próxima coluna">▶</button>
-        </div>
+      </div>
+      <div class="card__plan" hidden>
+        <span class="card__plan-text"></span>
+        <div class="bar"><b></b></div>
+      </div>
+      <div class="card__moves">
+        <button type="button" class="card__move" data-dir="-1" aria-label="Mover para a coluna anterior">◀</button>
+        <button type="button" class="card__move" data-dir="1" aria-label="Mover para a próxima coluna">▶</button>
       </div>
     </article>
   </template>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <script src="data.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
